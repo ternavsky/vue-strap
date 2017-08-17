@@ -110,7 +110,9 @@ export default {
     }
   },
   computed: {
-    canValidate () { return !this.disabled && !this.readonly && (this.required || this.regex || this.nativeValidate || this.match !== null) },
+    canValidate () {
+        return !this.disabled && !this.readonly && (this.required || this.regex || this.nativeValidate || this.match !== null || this.error !== null)
+    },
     errorText () {
       let value = this.value
       let error = [this.error]
@@ -169,6 +171,9 @@ export default {
     },
     value (val) {
       if (this.val !== val) { this.val = val }
+    },
+    error (val) {
+        this.valid = this.validate()
     }
   },
   methods: {
@@ -206,6 +211,11 @@ export default {
     },
     validate () {
       if (!this.canValidate) { return true }
+
+      if (!this.required && !this.regex && !this.nativeValidate && this.match === null && this.error !== null) {
+          return false;
+      }
+
       let value = (this.val || '').trim()
       if (!value) { return !this.required }
       if (this.match !== null) { return this.match === value }

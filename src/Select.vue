@@ -69,7 +69,8 @@ export default {
     countText: {type: String, default: null},
     showCount: {type: Boolean, default: false},
     url: {type: String, default: null},
-    value: null
+    value: null,
+    dependsOn: null
   },
   data () {
     return {
@@ -146,6 +147,12 @@ export default {
         }, 1500)
       }
       this.valid = this.validate()
+    },
+    dependsOn(val) {
+        if (!val) {
+            this.val = null;
+        }
+        this.urlChanged();
     }
   },
   methods: {
@@ -339,4 +346,3 @@ export default {
 }
 .btn-group-justified .dropdown-menu { width: 100%; }
 </style>
-
